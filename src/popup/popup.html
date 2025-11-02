@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slack UI Hider</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Slack UI Hider</h1>
+      <p class="subtitle">Blur distracting elements</p>
+    </header>
+
+    <main>
+      <div class="settings">
+        <!-- Workspace Section -->
+        <div class="settings-group">
+          <h3 class="settings-group-title">Workspace</h3>
+
+          <div class="setting-item">
+            <label class="toggle-label">
+              <input type="checkbox" class="toggle-switch" data-setting="hideWorkspaceName">
+              <span class="toggle-slider"></span>
+              <span class="setting-name">Workspace Name</span>
+            </label>
+            <span class="setting-description">Blur workspace name in header</span>
+          </div>
+        </div>
+
+        <!-- Channels Section -->
+        <div class="settings-group">
+          <h3 class="settings-group-title">Channels</h3>
+
+          <div class="setting-item">
+            <label class="toggle-label">
+              <input type="checkbox" class="toggle-switch" data-setting="hidePrivateChannels">
+              <span class="toggle-slider"></span>
+              <span class="setting-name">Private Channels</span>
+            </label>
+            <span class="setting-description">Blur private channels</span>
+          </div>
+
+          <div class="setting-item">
+            <label class="toggle-label">
+              <input type="checkbox" class="toggle-switch" data-setting="hidePublicChannels">
+              <span class="toggle-slider"></span>
+              <span class="setting-name">Public Channels</span>
+            </label>
+            <span class="setting-description">Blur public channels</span>
+          </div>
+
+          <div class="setting-item">
+            <label class="toggle-label">
+              <input type="checkbox" class="toggle-switch" data-setting="hideExternalChannels">
+              <span class="toggle-slider"></span>
+              <span class="setting-name">External Channels</span>
+            </label>
+            <span class="setting-description">Blur shared/external channels</span>
+          </div>
+
+          <div class="setting-item">
+            <label class="toggle-label">
+              <input type="checkbox" class="toggle-switch" data-setting="hideStarredChannels">
+              <span class="toggle-slider"></span>
+              <span class="setting-name">Starred Channels</span>
+            </label>
+            <span class="setting-description">Blur starred channels</span>
+          </div>
+        </div>
+
+        <!-- Communication Section -->
+        <div class="settings-group">
+          <h3 class="settings-group-title">Communication</h3>
+
+          <div class="setting-item">
+            <label class="toggle-label">
+              <input type="checkbox" class="toggle-switch" data-setting="hideDMs">
+              <span class="toggle-slider"></span>
+              <span class="setting-name">Direct Messages</span>
+            </label>
+            <span class="setting-description">Blur DMs section</span>
+          </div>
+
+          <div class="setting-item">
+            <label class="toggle-label">
+              <input type="checkbox" class="toggle-switch" data-setting="hideApps">
+              <span class="toggle-slider"></span>
+              <span class="setting-name">Apps</span>
+            </label>
+            <span class="setting-description">Blur apps section</span>
+          </div>
+        </div>
+
+        <!-- Content Section -->
+        <div class="settings-group">
+          <h3 class="settings-group-title">Content</h3>
+
+          <div class="setting-item">
+            <label class="toggle-label">
+              <input type="checkbox" class="toggle-switch" data-setting="hideMessages">
+              <span class="toggle-slider"></span>
+              <span class="setting-name">Messages</span>
+            </label>
+            <span class="setting-description">Blur message content</span>
+          </div>
+
+          <div class="setting-item">
+            <label class="toggle-label">
+              <input type="checkbox" class="toggle-switch" data-setting="hideThreads">
+              <span class="toggle-slider"></span>
+              <span class="setting-name">Threads</span>
+            </label>
+            <span class="setting-description">Blur threads section</span>
+          </div>
+
+          <div class="setting-item">
+            <label class="toggle-label">
+              <input type="checkbox" class="toggle-switch" data-setting="hideReactions">
+              <span class="toggle-slider"></span>
+              <span class="setting-name">Reactions</span>
+            </label>
+            <span class="setting-description">Blur message reactions</span>
+          </div>
+
+          <div class="setting-item">
+            <label class="toggle-label">
+              <input type="checkbox" class="toggle-switch" data-setting="hideSenders">
+              <span class="toggle-slider"></span>
+              <span class="setting-name">Senders</span>
+            </label>
+            <span class="setting-description">Blur message sender names</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="hide-all" class="action-btn">Blur All</button>
+        <button id="show-all" class="action-btn">Clear All</button>
+      </div>
+    </main>
+
+    <footer>
+      <p class="footer-text">Changes apply immediately</p>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

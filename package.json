@@ -1,0 +1,27 @@
+{
+  "name": "slack-ui-hider",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun run build.ts --watch",
+    "build": "bun run build.ts",
+    "clean": "rm -rf dist",
+    "package": "bun run build && cd dist && zip -r ../slack-ui-hider.zip .",
+    "format": "biome format --write ./src ./build.ts",
+    "lint": "biome lint ./src ./build.ts",
+    "lint:fix": "biome lint --write ./src ./build.ts",
+    "check": "biome check --write ./src ./build.ts",
+    "check:ci": "biome ci ./src ./build.ts",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.2",
+    "@types/bun": "latest",
+    "@types/chrome": "^0.1.27",
+    "typescript": "^5"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

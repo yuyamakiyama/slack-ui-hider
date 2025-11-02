@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="128" height="128" rx="24" fill="#4a154b"/>
+
+  <!-- Eye icon (visibility toggle) -->
+  <g transform="translate(64, 64)">
+    <!-- Eye outline -->
+    <ellipse cx="0" cy="0" rx="32" ry="20" fill="none" stroke="white" stroke-width="4"/>
+    <!-- Eye pupil -->
+    <circle cx="0" cy="0" r="12" fill="white"/>
+    <!-- Strike through for "hide" -->
+    <line x1="-36" y1="-24" x2="36" y2="24" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>
