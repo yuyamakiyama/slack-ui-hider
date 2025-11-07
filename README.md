@@ -12,7 +12,7 @@ Install the extension from the [Chrome Web Store](https://chrome.google.com/webs
 
 1. **Open the Extension Settings**: Click the extension **icon** in your Chrome toolbar while on any Slack workspace page
 
-   <img src="public/settings.png" alt="Extension Settings" width="250">
+   <img src="public/settings.png" alt="Extension Settings" width="350">
 
 2. **Toggle Elements to Blur**: Use the toggle switches to select which UI elements you want to blur:
    - Changes are applied immediately to all open Slack tabs
