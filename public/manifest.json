@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Slack UI Hider",
   "version": "1.0.0",
-  "description": "Blur distracting UI elements in Slack to improve focus",
+  "description": "Blur UI elements in Slack to protect sensitive information during screen sharing or recordings",
   "permissions": [
     "storage",
     "activeTab"
