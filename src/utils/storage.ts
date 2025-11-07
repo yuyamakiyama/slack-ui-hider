@@ -1,4 +1,4 @@
-import type { HideSettings } from "../types";
+import type { HideSettings } from '../types';
 
 export const DEFAULT_SETTINGS: HideSettings = {
   hideWorkspaceName: false,
@@ -12,11 +12,12 @@ export const DEFAULT_SETTINGS: HideSettings = {
   hideThreads: false,
   hideReactions: false,
   hideSenders: false,
+  hoverToReveal: true,
 };
 
 export async function getSettings(): Promise<HideSettings> {
   try {
-    const result = await chrome.storage.sync.get("settings");
+    const result = await chrome.storage.sync.get('settings');
     return result.settings || DEFAULT_SETTINGS;
   } catch {
     return DEFAULT_SETTINGS;

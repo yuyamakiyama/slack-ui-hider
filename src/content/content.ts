@@ -1,7 +1,7 @@
-import type { HideSettings, SettingKey } from "../types";
-import type { MessageType } from "../types/messages";
-import { getSettings } from "../utils/storage";
-import { SLACK_ELEMENTS } from "./constants";
+import type { HideSettings } from '../types';
+import type { MessageType } from '../types/messages';
+import { getSettings } from '../utils/storage';
+import { SLACK_ELEMENTS, type SlackElement } from './constants';
 
 class SlackUIHider {
   private settings: HideSettings | null = null;
@@ -20,41 +20,51 @@ class SlackUIHider {
   }
 
   private injectStyles(): void {
-    this.styleElement = document.createElement("style");
-    this.styleElement.id = "slack-ui-hider-styles";
+    this.styleElement = document.createElement('style');
+    this.styleElement.id = 'slack-ui-hider-styles';
     document.head.appendChild(this.styleElement);
+    this.updateStyles();
+  }
+
+  private updateStyles(): void {
+    if (!this.styleElement || !this.settings) return;
+
+    const hoverEnabled = this.settings.hoverToReveal ?? true;
 
     const css = Object.values(SLACK_ELEMENTS)
+      .filter((element): element is SlackElement => element !== null)
       .map((element) => {
-        // Split comma-separated selectors and prefix each with body class
         const selectors = element.selector
           .split(',')
-          .map(s => s.trim())
-          .map(s => `body.${element.className} ${s}`)
+          .map((s) => s.trim())
+          .map((s) => `body.${element.className} ${s}`)
           .join(', ');
 
-        // Create hover selectors separately to avoid pseudo-class issues
+        if (!hoverEnabled) {
+          return `${selectors} {
+  filter: blur(6px) !important;
+  opacity: 0.7 !important;
+  transition: filter 0.3s ease, opacity 0.3s ease !important;
+}`;
+        }
+
         const hoverSelectors = element.selector
           .split(',')
-          .map(s => s.trim())
-          .map(s => `body.${element.className} ${s}:hover`)
+          .map((s) => s.trim())
+          .map((s) => `body.${element.className} ${s}:hover`)
           .join(', ');
 
         return `${selectors} {
-          filter: blur(6px) !important;
-          opacity: 0.7 !important;
-          pointer-events: none !important;
-          user-select: none !important;
-          transition: filter 0.3s ease, opacity 0.3s ease !important;
-        }
-
-        ${hoverSelectors} {
-          filter: none !important;
-          opacity: 1 !important;
-          cursor: not-allowed !important;
-        }`;
+  filter: blur(6px) !important;
+  opacity: 0.7 !important;
+  transition: filter 0.3s ease, opacity 0.3s ease !important;
+} 
+${hoverSelectors} {
+  filter: none !important;
+  opacity: 1 !important;
+}`;
       })
-      .join("\n");
+      .join('\n\n');
 
     this.styleElement.textContent = css;
   }
@@ -65,16 +75,20 @@ class SlackUIHider {
     Object.entries(SLACK_ELEMENTS).forEach(([key, element]) => {
       if (!this.settings) return;
 
-      const shouldHide = this.settings[key as SettingKey] ?? false;
+      if (element === null) return;
+
+      const shouldHide = this.settings[key as keyof typeof SLACK_ELEMENTS] ?? false;
       document.body.classList.toggle(element.className, shouldHide);
     });
+
+    this.updateStyles();
   }
 
   private handleStorageChange(
     changes: { [key: string]: chrome.storage.StorageChange },
     areaName: string
   ): void {
-    if (areaName === "sync" && changes.settings) {
+    if (areaName === 'sync' && changes.settings) {
       this.settings = changes.settings.newValue;
       this.applySettings();
     }
@@ -82,14 +96,14 @@ class SlackUIHider {
 
   private handleMessage(
     message: MessageType,
-    sender: chrome.runtime.MessageSender,
+    _sender: chrome.runtime.MessageSender,
     sendResponse: (response?: unknown) => void
   ): boolean {
-    if (message.type === "UPDATE_SETTINGS") {
+    if (message.type === 'UPDATE_SETTINGS') {
       this.settings = message.settings;
       this.applySettings();
       sendResponse({ success: true });
-    } else if (message.type === "GET_SETTINGS") {
+    } else if (message.type === 'GET_SETTINGS') {
       sendResponse({ settings: this.settings });
     }
 
@@ -98,16 +112,14 @@ class SlackUIHider {
 
   private observeDOM(): void {
     const observer = new MutationObserver((mutations) => {
-      // Check if Slack has loaded new content that needs hiding
       const hasRelevantChanges = mutations.some((mutation) => {
         return (
-          mutation.type === "childList" &&
+          mutation.type === 'childList' &&
           (mutation.addedNodes.length > 0 || mutation.removedNodes.length > 0)
         );
       });
 
       if (hasRelevantChanges) {
-        // Debounce the application of settings
         if (this.debounceTimer) {
           clearTimeout(this.debounceTimer);
         }
@@ -126,10 +138,8 @@ class SlackUIHider {
   }
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () =>
-    new SlackUIHider().init()
-  );
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => new SlackUIHider().init());
 } else {
   new SlackUIHider().init();
 }

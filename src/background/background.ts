@@ -1,14 +1,14 @@
-import type { HideSettings } from "../types";
-import type { MessageType } from "../types/messages";
-import { DEFAULT_SETTINGS, saveSettings } from "../utils/storage";
+import type { HideSettings } from '../types';
+import type { MessageType } from '../types/messages';
+import { DEFAULT_SETTINGS, saveSettings } from '../utils/storage';
 
 chrome.runtime.onInstalled.addListener(async (details) => {
-  if (details.reason === "install") {
+  if (details.reason === 'install') {
     await saveSettings(DEFAULT_SETTINGS);
   }
 
-  if (details.reason === "update") {
-    const result = await chrome.storage.sync.get("settings");
+  if (details.reason === 'update') {
+    const result = await chrome.storage.sync.get('settings');
 
     await saveSettings({
       ...DEFAULT_SETTINGS,
@@ -17,26 +17,24 @@ chrome.runtime.onInstalled.addListener(async (details) => {
   }
 });
 
-chrome.runtime.onMessage.addListener(
-  (message: MessageType, _sender, sendResponse) => {
-    switch (message.type) {
-      case "GET_SETTINGS":
-        handleGetSettings(sendResponse);
-        return true;
+chrome.runtime.onMessage.addListener((message: MessageType, _sender, sendResponse) => {
+  switch (message.type) {
+    case 'GET_SETTINGS':
+      handleGetSettings(sendResponse);
+      return true;
 
-      case "UPDATE_SETTINGS":
-        handleUpdateSettings(message.settings, sendResponse);
-        return true;
+    case 'UPDATE_SETTINGS':
+      handleUpdateSettings(message.settings, sendResponse);
+      return true;
 
-      default:
-        return false;
-    }
+    default:
+      return false;
   }
-);
+});
 
 async function handleGetSettings(sendResponse: (response: unknown) => void) {
   try {
-    const result = await chrome.storage.sync.get("settings");
+    const result = await chrome.storage.sync.get('settings');
     sendResponse({ success: true, settings: result.settings });
   } catch (error) {
     sendResponse({ success: false, error: error });
@@ -50,12 +48,11 @@ async function handleUpdateSettings(
   try {
     await saveSettings(settings);
 
-    // Notify all tabs
-    const tabs = await chrome.tabs.query({ url: "*://*.slack.com/*" });
+    const tabs = await chrome.tabs.query({ url: '*://*.slack.com/*' });
     for (const tab of tabs) {
       if (tab.id) {
         await chrome.tabs.sendMessage(tab.id, {
-          type: "UPDATE_SETTINGS",
+          type: 'UPDATE_SETTINGS',
           settings,
         });
       }
@@ -69,7 +66,7 @@ async function handleUpdateSettings(
 
 const keepAlive = () => {
   chrome.runtime.getPlatformInfo(() => {
-    // Just to keep the service worker alive
+    // NOTE: Just to keep the service worker alive
   });
 };
 
