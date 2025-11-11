@@ -6,7 +6,7 @@ A Chrome extension that blurs UI elements in Slack to protect sensitive informat
 
 ## Installation
 
-Install the extension from the [Chrome Web Store](https://chrome.google.com/webstore) (search for "Slack UI Hider")
+Install the extension from [Here](https://chromewebstore.google.com/detail/slack-ui-hider/pglopipbgnkkoapmbkcdakpcggafapdm)
 
 ## Usage
 
